@@ -1,0 +1,20 @@
+{
+  "name": "pixel-canvas-client-node",
+  "version": "1.0.0",
+  "description": "Pixel Canvas client for usage within a Node.js environment",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "Azriel Alvarado",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^17.0.35",
+    "@types/ws": "^8.5.3",
+    "typescript": "^4.6.4"
+  },
+  "dependencies": {
+    "ws": "^8.6.0"
+  }
+}
