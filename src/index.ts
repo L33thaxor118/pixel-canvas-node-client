@@ -6,33 +6,42 @@ interface PaintCommand {
   color: number
 }
 
-/**
- * Represent the canvas state collapsed to a single dimension, 
- * with every 16 elements representing a row starting with the topmost one.
- */
-type MatrixStateDTO = Array<number>
+interface AWSRequest {
+  action: string
+}
 
 /**
  * Represents canvas state in 2 dimensions
  */
 type MatrixState = Array<Array<number>>
 
-const socket: WebSocket = new WebSocket('ws://localhost:8080')
+const socket: WebSocket = new WebSocket('wss://282bm5cqa4.execute-api.us-east-1.amazonaws.com/development/')
 
 type MatrixStateListener = (event: MatrixState)=>void
 
 var stateListener: MatrixStateListener | null = null
 
+var currentState: MatrixState
+
 socket.on('message', (data) => {
-  const stateDto: MatrixStateDTO = JSON.parse(data.toString())
-  var matrixState: MatrixState = []
-  const size = 16
-  while (stateDto.length > 0) {
-    matrixState.push(stateDto.splice(0, size))  
+  const messageData = JSON.parse(data.toString())
+  if (Array.isArray(messageData)) {
+    //received a GET message containing entire state
+    currentState = messageData
+  } else {
+    //received a PAINT message containing update
+    currentState[messageData.y][messageData.x] = messageData.color
   }
   if (stateListener != null) {
-    stateListener(matrixState)
+    stateListener(currentState)
   }
+})
+
+socket.on('open', () => {
+  const request: AWSRequest = {
+    action: "get"
+  }
+  socket.send(JSON.stringify(request))
 })
 
 /**
