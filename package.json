@@ -1,6 +1,6 @@
 {
   "name": "pixel-canvas-client-node",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Pixel Canvas client for usage within a Node.js environment",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
